@@ -2,13 +2,14 @@
 
 # The master version lives at https://github.com/pisanorg/w/wiki/simple-compile
 # Submit suggestions and modification on the wiki
-# Last Modified: 15 Jan 2020 - Yusuf Pisan
+# Last Modified: 17 Jan 2020 - Yusuf Pisan
 
 
 # Easily compile and run this program under Linux, using
 #   Compiler: clang++ or g++
 #   Style Checker: clang-tidy with options from .clang-tidy
-#   Style Formatting: clang-format using LLVM style from .clang-format
+#   Style Formatting: clang-format
+#   using LLVM style from .clang-format
 #   Memory Leak: valgrind and "ASAN_OPTIONS=detect_leaks=1" option
 
 # Lines starting with '$' indicate what is typed on command line
@@ -106,14 +107,20 @@ echo "==================================================================="
 if hash valgrind 2>/dev/null; then
   if [ -f myprogram ]; then
     echo "*** running valgrind to detect memory leaks"
-    echo "*** Examine \"definitely lost\" "
     valgrind --leak-check=full ./myprogram > myprogram-valgrind-output.txt 2>&1
-    grep "definitely lost: 0 bytes in 0 blocks" myprogram-valgrind-output.txt
+    # default NOLEAKMSG is for CSS Linux Lab 3.10.0-957.27.2.el7.x86_64
+    NOLEAKMSG="in use at exit: 0 bytes in 0 blocks"
+    if [ "valgrind-3.15.0.GIT" == `valgrind --version 2> /dev/null` ]; then
+      # "Using Mac Laptop, Darwin Kernel Version 16.7.0"
+      NOLEAKMSG="definitely lost: 0 bytes in 0 blocks"
+    fi
+    grep "$NOLEAKMSG" myprogram-valgrind-output.txt
     # exit status of grep is 0 is no match found, 1 if match found
     LAST_COMMAND_RESULT=$?
     if [ $LAST_COMMAND_RESULT -eq 1 ]; then
-        echo "---> grep from valgrind found memory leak, setting exitcode to 111"
-        EXIT_VALUE=111
+      echo "---> grep from valgrind did not find expected string: $NOLEAKMSG"
+      echo "---> might have memory leak, setting exitcode to 111"
+      EXIT_VALUE=111
     fi
   else
     echo "*** ERROR could not find executable to test with valgrind"
@@ -153,7 +160,8 @@ fi
 
 echo "==================================================================="
 echo "*** cleaning up, deleting myprogram"
-rm -rf myprogram myprogram.dSYM core myprogram-valgrind-output.txt myprogram-clangstatic-output.txt .clang-format 2>/dev/null
+rm -rf myprogram myprogram.dSYM core myprogram-valgrind-output.txt \
+myprogram-clangstatic-output.txt .clang-format *.plist 2>/dev/null
 
 echo "==================================================================="
 date
