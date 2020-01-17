@@ -14,16 +14,16 @@ TurtleProgram::TurtleProgram() {
 }
 
 TurtleProgram::TurtleProgram(const string &Command) {
-    const int oneParam = 1;
-    length = oneParam;
-    turtleArray = new string[oneParam];
+    const int OneParam = 1;
+    length = OneParam;
+    turtleArray = new string[OneParam];
     turtleArray[0] = Command;
 }
 
 TurtleProgram::TurtleProgram(const string &Command, const string &Times) {
-    const int twoParam = 2;
-    length = twoParam;
-    turtleArray = new string[twoParam];
+    const int TwoParam = 2;
+    length = TwoParam;
+    turtleArray = new string[TwoParam];
     turtleArray[0] = Command;
     turtleArray[1] = Times;
 }
@@ -60,8 +60,8 @@ bool TurtleProgram::operator!=(const TurtleProgram &Rhs) const {
 
 bool TurtleProgram::operator==(const TurtleProgram &Rhs) const {
     if (length != Rhs.length) { return false; }
-    for (int i = 0; i < length; i++) {
-        if (turtleArray[i].compare(Rhs.turtleArray[i]) != 0) {
+    for (int I = 0; I < length; I++) {
+        if (turtleArray[I].compare(Rhs.turtleArray[I]) != 0) {
             return false;
         }
     }
@@ -74,39 +74,39 @@ TurtleProgram TurtleProgram::operator+(const TurtleProgram &Tp) const {
     Bigger.length = length + Tp.length;
     delete[]Bigger.turtleArray;
     Bigger.turtleArray = new string[Bigger.length];
-    int i = 0;
+    int I = 0;
     if (length > 0) {
-        for (i; i < length; i++) {
-            Bigger.turtleArray[i] = turtleArray[i];
+        for (I = 0; I < length; I++) {
+            Bigger.turtleArray[I] = turtleArray[I];
         }
     }
     if(Tp.length > 0){
-        for (int j = 0; j < Tp.length; j++) {
-            Bigger.turtleArray[i] = Tp.turtleArray[j];
-            i++;
+        for (int J = 0; J < Tp.length; J++) {
+            Bigger.turtleArray[I] = Tp.turtleArray[J];
+            I++;
         }
     }
     return Bigger;
 }
 
 TurtleProgram &TurtleProgram::operator+=(const TurtleProgram &Tp) {
-    string* tempPtr;
-    tempPtr = new string[length];
-    for (int i = 0; i < length; i++) {
-        tempPtr[i] = turtleArray[i];
+    string* TempPtr;
+    TempPtr = new string[length];
+    for (int I = 0; I < length; I++) {
+        TempPtr[I] = turtleArray[I];
     }
     delete []turtleArray;
     turtleArray = new string[length + Tp.length];
-    int i = 0;
-    for (i; i < length; i++) {
-        turtleArray[i] = tempPtr[i];
+    int I = 0;
+    for (I = 0; I < length; I++) {
+        turtleArray[I] = TempPtr[I];
     }
-    for (int j = 0; j < Tp.length; j++) {
-        turtleArray[i] = Tp.turtleArray[j];
-        i++;
+    for (int J = 0; J < Tp.length; J++) {
+        turtleArray[I] = Tp.turtleArray[J];
+        I++;
     }
     length += Tp.length;
-    delete []tempPtr;
+    delete []TempPtr;
     return *this;
 }
 
@@ -117,34 +117,33 @@ TurtleProgram TurtleProgram::operator*(const int &Times) const {
     Bigger.length = length * Times;
     delete[]Bigger.turtleArray;
     Bigger.turtleArray = new string[Bigger.length];
-    int i = 0;
-    while (i < Bigger.length) {
-        for (int j = 0; j < length; j++) {
-            Bigger.turtleArray[i] = turtleArray[j];
-            i++;
+    int I = 0;
+    while (I < Bigger.length) {
+        for (int J = 0; J < length; J++) {
+            Bigger.turtleArray[I] = turtleArray[J];
+            I++;
         }
     }
-    //delete[]turtleArray;
     return Bigger;
 }
 
 TurtleProgram &TurtleProgram::operator*=(const int &Times) {
     assert(Times > 0);
-    string *tempPtr;
-    tempPtr = new string[length];
-    for (int i = 0; i < length; i++) {
-        tempPtr[i] = turtleArray[i];
+    string *TempPtr;
+    TempPtr = new string[length];
+    for (int I = 0; I < length; I++) {
+        TempPtr[I] = turtleArray[I];
     }
     delete []turtleArray;
     turtleArray = new string[length * Times];
-    int i = 0;
-    while (i < (length * Times)) {
-        for (int j = 0; j < length; j++) {
-            turtleArray[i] = tempPtr[j];
-            i++;
+    int I = 0;
+    while (I < (length * Times)) {
+        for (int J = 0; J < length; J++) {
+            turtleArray[I] = TempPtr[J];
+            I++;
         }
     }
-    delete []tempPtr;
+    delete []TempPtr;
     length *= Times;
     return *this;
 }
@@ -154,8 +153,8 @@ TurtleProgram &TurtleProgram::operator=(const TurtleProgram &Rhs) { // copy assi
         delete []turtleArray;
         length = Rhs.length;
         turtleArray = new string[Rhs.length];
-        for (int i = 0; i < Rhs.length; i++) {
-            turtleArray[i] = Rhs.turtleArray[i];
+        for (int I = 0; I < Rhs.length; I++) {
+            turtleArray[I] = Rhs.turtleArray[I];
         }
     }
     return *this;
@@ -170,9 +169,9 @@ TurtleProgram::~TurtleProgram() {
 // Overloaded output operator for class Array
 ostream &operator<<(ostream &Out, const TurtleProgram &Tp) {
     Out << "[";
-    for (int i = 0; i < Tp.length; i++) {
-        Out << Tp.turtleArray[i];
-        if (i != (Tp.length - 1)) {
+    for (int I = 0; I < Tp.length; I++) {
+        Out << Tp.turtleArray[I];
+        if (I != (Tp.length - 1)) {
             Out << " ";
         }
     }
