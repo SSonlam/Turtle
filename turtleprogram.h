@@ -38,8 +38,8 @@ public:
     TurtleProgram &operator*=(const int &Times);
 protected:
 private:
-    int length;
-    string *turtleArray = nullptr;
+    int length; // how many strings in the array
+    string *turtleArray = nullptr; // Memory location for arrays
 
 };
 

@@ -7,7 +7,7 @@
 
 #include "turtleprogram.h"
 #include <cassert>
-
+// constructors: empty, one param, two param
 TurtleProgram::TurtleProgram() {
     length = 0;
     turtleArray = new string[0];
@@ -28,7 +28,7 @@ TurtleProgram::TurtleProgram(const string &Command, const string &Times) {
     turtleArray[1] = Times;
 }
 
-
+// copy constructor
 TurtleProgram::TurtleProgram(const TurtleProgram &Tp) {
     *this = Tp;
 }
@@ -38,6 +38,7 @@ int TurtleProgram::getLength() const {
     return length;
 }
 string TurtleProgram::getIndex(const int &I) const {
+    // edge cases for accessing out of scope
     if (turtleArray == nullptr) { return "empty array"; }
     if (I < 0 || I > length) { return "out of scope"; }
     return turtleArray[I];
@@ -45,6 +46,7 @@ string TurtleProgram::getIndex(const int &I) const {
 
 // mutators
 void TurtleProgram::setIndex(const int &I, const string &Str) {
+    // edge case for out of scope
     if (turtleArray == nullptr || I < 0 || I > length) {
         cout << "Cannot perform setIndex" << endl;
     }
@@ -57,9 +59,11 @@ void TurtleProgram::setIndex(const int &I, const string &Str) {
 bool TurtleProgram::operator!=(const TurtleProgram &Rhs) const {
     return !(*this == Rhs);
 }
-
+// only returns true if entire array is same data
 bool TurtleProgram::operator==(const TurtleProgram &Rhs) const {
+    // quick check for length
     if (length != Rhs.length) { return false; }
+    // compare element to element
     for (int I = 0; I < length; I++) {
         if (turtleArray[I].compare(Rhs.turtleArray[I]) != 0) {
             return false;
@@ -76,11 +80,14 @@ TurtleProgram TurtleProgram::operator+(const TurtleProgram &Tp) const {
     Bigger.turtleArray = new string[Bigger.length];
     int I = 0;
     if (length > 0) {
+        // fill new object's array with this.turtleArray content
         for (I = 0; I < length; I++) {
             Bigger.turtleArray[I] = turtleArray[I];
         }
     }
     if(Tp.length > 0){
+        // after filled by this.turtleArray content, fills rest with
+        // Tp.turtleArray content
         for (int J = 0; J < Tp.length; J++) {
             Bigger.turtleArray[I] = Tp.turtleArray[J];
             I++;
@@ -91,13 +98,17 @@ TurtleProgram TurtleProgram::operator+(const TurtleProgram &Tp) const {
 
 TurtleProgram &TurtleProgram::operator+=(const TurtleProgram &Tp) {
     string* TempPtr;
-    TempPtr = new string[length];
+    TempPtr = new string[length]; //temporary array to hold data
     for (int I = 0; I < length; I++) {
         TempPtr[I] = turtleArray[I];
     }
     delete []turtleArray;
     turtleArray = new string[length + Tp.length];
     int I = 0;
+    /*
+    * bring data back to this.turtleArray after dynamically
+    * allocating new memory
+    */
     for (I = 0; I < length; I++) {
         turtleArray[I] = TempPtr[I];
     }
@@ -116,8 +127,9 @@ TurtleProgram TurtleProgram::operator*(const int &Times) const {
     TurtleProgram Bigger;
     Bigger.length = length * Times;
     delete[]Bigger.turtleArray;
+    // allocating new memory
     Bigger.turtleArray = new string[Bigger.length];
-    int I = 0;
+    int I = 0; // variable to traverse Bigger.turtleArray
     while (I < Bigger.length) {
         for (int J = 0; J < length; J++) {
             Bigger.turtleArray[I] = turtleArray[J];
@@ -130,13 +142,14 @@ TurtleProgram TurtleProgram::operator*(const int &Times) const {
 TurtleProgram &TurtleProgram::operator*=(const int &Times) {
     assert(Times > 0);
     string *TempPtr;
+    // temporary array to hold data
     TempPtr = new string[length];
     for (int I = 0; I < length; I++) {
         TempPtr[I] = turtleArray[I];
     }
     delete []turtleArray;
     turtleArray = new string[length * Times];
-    int I = 0;
+    int I = 0; // variable to traverse Bigger.turtleArray
     while (I < (length * Times)) {
         for (int J = 0; J < length; J++) {
             turtleArray[I] = TempPtr[J];
@@ -147,19 +160,21 @@ TurtleProgram &TurtleProgram::operator*=(const int &Times) {
     length *= Times;
     return *this;
 }
-
+// assignment operator
 TurtleProgram &TurtleProgram::operator=(const TurtleProgram &Rhs) { // copy assignment
+    //self assignment check
     if (this != &Rhs) {
         delete []turtleArray;
         length = Rhs.length;
         turtleArray = new string[Rhs.length];
+        // simple loop copy 
         for (int I = 0; I < Rhs.length; I++) {
             turtleArray[I] = Rhs.turtleArray[I];
         }
     }
     return *this;
 }
-
+// destructor
 TurtleProgram::~TurtleProgram() {
     delete []turtleArray;
 }
