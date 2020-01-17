@@ -80,7 +80,6 @@ void test3() {
     assert(Tp1 == Tp2 && "Tp2 modified, == now");
     
 #pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wself-assign-overloaded"
     Tp2 = Tp2;
 #pragma clang diagnostic pop
 
