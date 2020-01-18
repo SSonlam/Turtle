@@ -114,6 +114,10 @@ if hash valgrind 2>/dev/null; then
       # "Using Mac Laptop, Darwin Kernel Version 16.7.0"
       NOLEAKMSG="definitely lost: 0 bytes in 0 blocks"
     fi
+    if [ "valgrind-3.11.0" == `valgrind --version 2> /dev/null` ]; then
+      # "Using Travis CI, Xenial Distro Kernel Version 4.15.0-1028-gcp"
+      NOLEAKMSG="definitely lost: 0 bytes in 0 blocks"
+    fi
     grep "$NOLEAKMSG" myprogram-valgrind-output.txt
     # exit status of grep is 0 is no match found, 1 if match found
     LAST_COMMAND_RESULT=$?
